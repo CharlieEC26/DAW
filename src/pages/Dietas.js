@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../providers/DietList.css'; // Archivo de estilos CSS
+import '../DietList.css'; // Archivo de estilos CSS
 
 const DietList = () => {
   const [diets, setDiets] = useState([]);
