@@ -1,39 +1,39 @@
 import React, { useState } from 'react';
-import '../providers/TodoList.css'; // Archivo de estilos CSS
+import '../providers/DietList.css'; // Archivo de estilos CSS
 
-const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+const DietList = () => {
+  const [diets, setDiets] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
-  const handleAddTodo = () => {
+  //handle para agregar las dietas
+  const handleAddDiets = () => {
     if (inputValue.trim() !== '') {
-      const newTodo = {
+      const newDiet = {
         id: Date.now(),
         text: inputValue,
       };
-      setTodos([...todos, newTodo]);
+      setDiets([...diets, newDiet]);
       setInputValue('');
     }
   };
-
-  const handleEditTodo = (id, newText) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, text: newText } : todo
+  //handle para editar las dietas
+  const handleEditDiets = (id, newText) => {
+    const updatedDiets = diets.map((diet) =>
+    diet.id === id ? { ...diet, text: newText } : diet
     );
-    setTodos(updatedTodos);
+    setDiets(updatedDiets);
   };
-
-  const handleDeleteTodo = (id) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
+  //handle para eliminar las dietas
+  const handleDeleteDiets = (id) => {
+    const updatedDiets = diets.filter((diet) => diet.id !== id);
+    setDiets(updatedDiets);
   };
 
   return (
-    <div className="todo-container">
+    <div className="diet-container">
       <h1>Dietas</h1>
       <div className="input-container">
         <input
@@ -42,17 +42,17 @@ const TodoList = () => {
           onChange={handleInputChange}
           placeholder="Digita la nueva dieta"
         />
-        <button onClick={handleAddTodo}>Agregar</button>
+        <button onClick={handleAddDiets}>Agregar</button>
       </div>
       <ul className="todo-list">
-        {todos.map((todo) => (
-          <li key={todo.id}>
+        {diets.map((diet) => (
+          <li key={diet.id}>
             <input
               type="text"
-              value={todo.text}
-              onChange={(e) => handleEditTodo(todo.id, e.target.value)}
+              value={diet.text}
+              onChange={(e) => handleEditDiets(diet.id, e.target.value)}
             />
-            <button onClick={() => handleDeleteTodo(todo.id)}>Eliminar</button>
+            <button onClick={() => handleDeleteDiets(diet.id)}>Eliminar</button>
           </li>
         ))}
       </ul>
@@ -60,4 +60,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default DietList;
