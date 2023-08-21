@@ -58,5 +58,4 @@ const DietList = () => {
     </div>
   );
 };
-
 export default DietList;
