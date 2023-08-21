@@ -1,67 +1,32 @@
-.diet-container {
-    padding: 20px;
-    max-width: 400px;
+.container {
+    max-width: 800px;
     margin: 0 auto;
-    background-color: #636262;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-
+    padding: 20px;
   }
   
-  h1 {
-    text-align: center;
-  }
-  
-  .input-container {
-    margin-bottom: 10px;
-    display: flex;
-  }
-  
-  input[type='text'] {
-    border: 1px solid #ccc;
-    padding: 8px;
-    flex: 1;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  button {
-    margin-left: 10px;
-    background-color: #4caf50;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-  }
-  
-  ul {
+  .list {
+    list-style: none;
     padding: 0;
-    list-style-type: none;
   }
   
-  li {
+  .list li {
     margin-bottom: 10px;
-    align-items: center;
-    display: flex;
+    padding: 10px;
+    background-color: #f0f0f0;
   }
   
-  li input[type='text'] {
-    font-size: 16px;
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 4px;
-    flex: 1;
+  .form-container {
+    margin-top: 20px;
   }
   
-  li button {
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 14px;
-    border: none;
+  .form-container input[type="text"] {
+    padding: 5px;
+  }
+  
+  .form-container button {
+    padding: 5px 10px;
+    background-color: #007bff;
     color: white;
-    margin-left: 10px;
+    border: none;
     cursor: pointer;
-    background-color: #f44336;
   }

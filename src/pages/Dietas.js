@@ -1,61 +1,60 @@
-import React, { useState } from 'react';
-import '../DietList.css'; // Archivo de estilos CSS
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import useAuth from '../hooks/useAuth'; 
+import '../DietList.css'; 
 
 const DietList = () => {
   const [diets, setDiets] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+  const [newDietName, setNewDietName] = useState('');
+  const { user } = useAuth();
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-  //handle para agregar las dietas
-  const handleAddDiets = () => {
-    if (inputValue.trim() !== '') {
-      const newDiet = {
-        id: Date.now(),
-        text: inputValue,
-      };
-      setDiets([...diets, newDiet]);
-      setInputValue('');
+  useEffect(() => {
+    const unsubscribe = db.collection('diets').onSnapshot((snapshot) => {
+      const dietsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setDiets(dietsData);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleAddDiet = () => {
+    if (newDietName) {
+      db.collection('diets').add({ name: newDietName }).catch((error) => {
+        console.error('Error, no se pudo agregar la dieta: ', error);
+      });
+      setNewDietName('');
     }
   };
-  //handle para editar las dietas
-  const handleEditDiets = (id, newText) => {
-    const updatedDiets = diets.map((diet) =>
-    diet.id === id ? { ...diet, text: newText } : diet
-    );
-    setDiets(updatedDiets);
-  };
-  //handle para eliminar las dietas
-  const handleDeleteDiets = (id) => {
-    const updatedDiets = diets.filter((diet) => diet.id !== id);
-    setDiets(updatedDiets);
+
+  const renderAdminControls = () => {
+    if (user && (user.role === 'Admin' || user.role === 'Instructor')) {
+      return (
+        <div>
+          <h2>Agregar Nueva Dieta</h2>
+          <input
+            type="text"
+            value={newDietName}
+            onChange={(e) => setNewDietName(e.target.value)}
+          />
+          <button onClick={handleAddDiet}>Agregar</button>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
-    <div className="diet-container">
-      <h1>Dietas</h1>
-      <div className="input-container">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Digita la nueva dieta"
-        />
-        <button onClick={handleAddDiets}>Agregar</button>
-      </div>
-      <ul className="todo-list">
+    <div>
+      <h2>Dietas Disponibles</h2>
+      <ul>
         {diets.map((diet) => (
-          <li key={diet.id}>
-            <input
-              type="text"
-              value={diet.text}
-              onChange={(e) => handleEditDiets(diet.id, e.target.value)}
-            />
-            <button onClick={() => handleDeleteDiets(diet.id)}>Eliminar</button>
-          </li>
+          <li key={diet.id}>{diet.name}</li>
         ))}
       </ul>
+      {renderAdminControls()}
     </div>
   );
 };
