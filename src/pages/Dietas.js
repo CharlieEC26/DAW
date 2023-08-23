@@ -11,24 +11,10 @@ const DietList = () => {
   const [user, setUser] = useState(null);
   const [editingDietId, setEditingDietId] = useState(null);
   const [isAdminOrInstructor, setIsAdminOrInstructor] = useState(false);
-  
-  //const isAdminOrInstructor = dbUser && (dbUser.role === 'Admin' || dbUser.role === 'Instructor');
-  //var isAdminOrInstructor = 'null';
+
   const [authUser, setAuthUser] = useState(null);
   const [dbUser, setDbUser] = useState(null);
-/*
-  const getUserInfo = () => {
-    const user = auth.currentUser;
-    if (user) {
-      console.log('Usuario autenticado:', user);
-      console.log('Correo electrónico:', user.email);
-      console.log('ID:', user.uid);
-    } else {
-      console.log('No hay usuario autenticado');
-      return null;
-    }
-  };
-*/
+
 
 const getAuthenticatedUserInfo = () => {
   const user = auth.currentUser;
@@ -36,30 +22,14 @@ const getAuthenticatedUserInfo = () => {
     return {
       uid: user.uid,
       email: user.email,
-      // Puedes agregar más propiedades según tus necesidades
+
     };
   } else {
     return null;
   }
 };
 
-/*
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'diets'), (snapshot) => {
-      const dietsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setDiets(dietsData);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-  */
-
-  // Verificar el rol del usuario y obtener la lista de dietas al montar el componente
+ 
   const verifyUserRoleAndFetchDiets = async () => {
     if (authUser && authUser.email) {
       const dbUserInfo = await searchUserByEmail(authUser.email);
@@ -75,7 +45,7 @@ const getAuthenticatedUserInfo = () => {
       verifyUserRoleAndFetchDiets();
     };
 
-    fetchAndVerify(); // Llamar para obtener la información del usuario y verificar el rol
+    fetchAndVerify();
   }, []);
 
   useEffect(() => {
@@ -105,7 +75,7 @@ const fetchAuthenticatedUserInfo = async () => {
     if (dbUserInfo && dbUserInfo.email === userInfo.email) {
       setAuthUser(dbUserInfo);
       setIsAdminOrInstructor(dbUserInfo.role === 'Admin' || dbUserInfo.role === 'Instructor');
-      verifyUserRoleAndFetchDiets(); // Llamar a esta función aquí
+      verifyUserRoleAndFetchDiets();
     }
   }
 };
@@ -186,7 +156,6 @@ const fetchAuthenticatedUserInfo = async () => {
       console.error('Error al eliminar la dieta:', error);
     }
   };
-  //const isAdminOrInstructor = dbUserInfo && (dbUserInfo.role.role === 'Admin' || dbUserInfo.role === 'Instructor');
   return (
     <div>
       <h1>Gestión de Dietas</h1>
@@ -232,7 +201,6 @@ const fetchAuthenticatedUserInfo = async () => {
             
             {dbUser && dbUser.role === 'Usuario' && (
               <div>
-                {/* Aquí puedes mostrar botones específicos para el rol 'Usuario' */}
               </div>
             )}
           </li>
